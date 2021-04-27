@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using nac.CurlHttpClient.model;
 using nac.CurlThin.Enums;
 using curl = nac.CurlThin.CurlNative.Easy;
@@ -124,5 +125,68 @@ namespace nac.CurlHttpClient
 
             return System.Text.RegularExpressions.Regex.IsMatch(url, "^https?://");
         }
+
+        private nac.CurlThin.SafeHandles.SafeSlistHandle curlSetHeader(CurlHandleType curlHandle)
+        {
+            // followed documentation here: https://curl.se/libcurl/c/CURLOPT_HTTPHEADER.html
+            if (this.headers.Any())
+            {
+                nac.CurlThin.SafeHandles.SafeSlistHandle list = null;
+
+                foreach (var pair in this.headers)
+                {
+                    list = nac.CurlThin.CurlNative.Slist.Append(list, $"{pair.Key}: {pair.Value}");
+                }
+
+                curl.SetOpt(curlHandle, CURLoption.HTTPHEADER, list.DangerousGetHandle());
+
+                return list; // list will need to be freed
+            }
+
+            return null;
+        }
+
+
+        private model.CurlExecResult execCurl(CurlHandleType curlHandle, string url)
+        {
+            var result = new model.CurlExecResult();
+            if (!this.isAbsoluteUrl(url))
+            {
+                url = this.options.appendToBaseAddress(url);
+            }
+            
+            // we know the final URL here
+            result.RequestUrl = url;
+
+            var headerListHandle = this.curlSetHeader(curlHandle);
+            curl.SetOpt(curlHandle, CURLoption.URL, url);
+            
+            result.ResponseStream = new System.IO.MemoryStream();
+            curl.SetOpt(curlHandle, CURLoption.WRITEFUNCTION, (data, size, nmemb, user) =>
+            {
+                var length = (int) size * (int) nmemb;
+                var buffer = new byte[length];
+                System.Runtime.InteropServices.Marshal.Copy(data, buffer, 0, length);
+                result.ResponseStream.Write(buffer, 0, length);
+                return (UIntPtr) length;
+            });
+
+            result.ResponseCode = curl.Perform(curlHandle);
+            
+            // free up some stuff
+            if (headerListHandle != null)
+            {
+                nac.CurlThin.CurlNative.Slist.FreeAll(headerListHandle);
+            }
+            
+            // give back result
+            return result;
+        }
+        
+        
+        
+        
+        
+        
     }
 }
