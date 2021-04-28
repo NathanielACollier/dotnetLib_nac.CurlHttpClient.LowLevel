@@ -16,3 +16,11 @@
     var http = new nac.CurlHttpClient.http("http://httpbin.org/ip");
     var result = http.get();
 ```
+
+### POST
++ Basic Post FormPost method
+```c#
+    var http = new nac.CurlHttpClient.http();
+    var result = http.post("http://httpbin.org/post",
+        requestBody: "fieldname1=fieldvalue1&fieldname2=fieldvalue2");
+```
