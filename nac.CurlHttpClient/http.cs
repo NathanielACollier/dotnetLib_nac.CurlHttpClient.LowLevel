@@ -187,6 +187,10 @@ namespace nac.CurlHttpClient
             var result = this.execCurl(curlHandle, url, headers);
             
             // Trigger OnNewHttpResponse
+            // + also fill in some other stuff
+            result.RequestMethod = "GET";
+            result.setupOptions = this.options;
+            this.options.onNewHttpResponse?.Invoke(result);
             
             // end things out
             curlHandle.Dispose();

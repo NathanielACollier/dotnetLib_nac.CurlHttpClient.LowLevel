@@ -20,6 +20,9 @@ namespace nac.CurlHttpClient.model
         
         public onNewHttpRequestDelegate onNewHttpRequest { get; set; }
 
+        public delegate void onNewHttpResponseDelegate(model.CurlExecResult response);
+        public onNewHttpResponseDelegate onNewHttpResponse { get; set; }
+
         public HttpSetup()
         {
             this.useKerberosAuthentication = false;
