@@ -10,10 +10,6 @@ namespace nac.CurlHttpClient
 {
     public class http
     {
-
-        private Dictionary<string, string> headers = new Dictionary<string, string>();
-        private Dictionary<string, string> headersNextCall = new Dictionary<string, string>();
-
         private model.HttpSetup options;
 
         public http(model.HttpSetup __options=null)
@@ -79,8 +75,6 @@ namespace nac.CurlHttpClient
         private CurlHandleType curlSetup()
         {
             var curlHandle = curl.Init();
-            this.clearHeaders();
-            this.transferHeadersForNextCall();
 
             curl.SetOpt(curlHandle, CURLoption.USERAGENT,
                 "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1");
@@ -97,28 +91,7 @@ namespace nac.CurlHttpClient
 
             return curlHandle;
         }
-
-
-        public http addHeaderForNextCall(string key, string value)
-        {
-            this.headersNextCall.Add(key,value);
-            return this;
-        }
-
-        private void transferHeadersForNextCall()
-        {
-            foreach (var pair in this.headersNextCall)
-            {
-                this.headers.Add(pair.Key, pair.Value);
-            }
-            this.headersNextCall.Clear();
-        }
-
-        private void clearHeaders()
-        {
-            this.headers.Clear();
-        }
-
+        
         private bool isAbsoluteUrl(string url)
         {
             url = url?.Trim() ?? "";
@@ -126,14 +99,15 @@ namespace nac.CurlHttpClient
             return System.Text.RegularExpressions.Regex.IsMatch(url, "^https?://");
         }
 
-        private nac.CurlThin.SafeHandles.SafeSlistHandle curlSetHeader(CurlHandleType curlHandle)
+        private nac.CurlThin.SafeHandles.SafeSlistHandle curlSetHeader(CurlHandleType curlHandle,
+                                                                    Dictionary<string,string> headers)
         {
             // followed documentation here: https://curl.se/libcurl/c/CURLOPT_HTTPHEADER.html
-            if (this.headers.Any())
+            if (headers?.Any() == true)
             {
                 nac.CurlThin.SafeHandles.SafeSlistHandle list = null;
 
-                foreach (var pair in this.headers)
+                foreach (var pair in headers)
                 {
                     list = nac.CurlThin.CurlNative.Slist.Append(list, $"{pair.Key}: {pair.Value}");
                 }
@@ -147,7 +121,7 @@ namespace nac.CurlHttpClient
         }
 
 
-        private model.CurlExecResult execCurl(CurlHandleType curlHandle, string url)
+        private model.CurlExecResult execCurl(CurlHandleType curlHandle, string url, Dictionary<string,string> headers=null)
         {
             var result = new model.CurlExecResult();
             if (!this.isAbsoluteUrl(url))
@@ -157,8 +131,8 @@ namespace nac.CurlHttpClient
             
             // we know the final URL here
             result.RequestUrl = url;
-
-            var headerListHandle = this.curlSetHeader(curlHandle);
+            
+            var headerListHandle = this.curlSetHeader(curlHandle, headers);
             curl.SetOpt(curlHandle, CURLoption.URL, url);
             
             result.ResponseStream = new System.IO.MemoryStream();
