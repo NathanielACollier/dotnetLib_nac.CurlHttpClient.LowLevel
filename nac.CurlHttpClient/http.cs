@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using nac.CurlHttpClient.model;
 using nac.CurlThin.Enums;
+using nac.CurlThin.SafeHandles;
 using curl = nac.CurlThin.CurlNative.Easy;
 using CurlHandleType = nac.CurlThin.SafeHandles.SafeEasyHandle;
 
@@ -105,7 +106,7 @@ namespace nac.CurlHttpClient
             // followed documentation here: https://curl.se/libcurl/c/CURLOPT_HTTPHEADER.html
             if (headers?.Any() == true)
             {
-                nac.CurlThin.SafeHandles.SafeSlistHandle list = null;
+                nac.CurlThin.SafeHandles.SafeSlistHandle list = SafeSlistHandle.Null;
 
                 foreach (var pair in headers)
                 {
@@ -196,7 +197,36 @@ namespace nac.CurlHttpClient
             curlHandle.Dispose();
             return result;
         }
-        
+
+        public model.CurlExecResult post(string url = "", Dictionary<string, string> headers = null, string requestBody="")
+        {
+            var curlHandle = this.curlSetup();
+
+            curl.SetOpt(curlHandle, CURLoption.POST, 1);
+
+            if (!string.IsNullOrEmpty(requestBody))
+            {
+                if (headers == null)
+                {
+                    headers = new Dictionary<string, string>();
+                }
+                curl.SetOpt(curlHandle, CURLoption.POSTFIELDS, requestBody);
+                headers.Add("Content-Length",requestBody.Length.ToString());
+            }
+
+            var result = this.execCurl(curlHandle, url, headers);
+            
+            // Trigger OnNewHttpResponse
+            // + also fill in some other stuff
+            result.RequestMethod = "POST";
+            result.RequestBody = requestBody;
+            result.setupOptions = this.options;
+            this.options.onNewHttpResponse?.Invoke(result);
+            
+            // end things out
+            curlHandle.Dispose();
+            return result;
+        }
         
         
     }

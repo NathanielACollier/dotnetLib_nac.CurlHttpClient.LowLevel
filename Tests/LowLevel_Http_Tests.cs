@@ -8,9 +8,7 @@ namespace Tests
     public class LowLevel_Http_Tests
     {
 
-        
-        [TestMethod]
-        public void get()
+        private nac.CurlHttpClient.http createHttp()
         {
             var http = new nac.CurlHttpClient.http(new HttpSetup()
             {
@@ -19,7 +17,23 @@ namespace Tests
                     Console.WriteLine(_response);
                 }
             });
+            return http;
+        }
+        
+        [TestMethod]
+        public void get()
+        {
+            var http = createHttp();
             var result = http.get("http://httpbin.org/ip");
+        }
+
+
+        [TestMethod]
+        public void post()
+        {
+            var http = createHttp();
+            var result = http.post("http://httpbin.org/post",
+                requestBody: "fieldname1=fieldvalue1&fieldname2=fieldvalue2");
         }
     }
 }
