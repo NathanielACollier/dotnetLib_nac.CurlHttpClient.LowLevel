@@ -12,5 +12,4 @@ namespace nac.CurlHttpClient.model
 
         public Dictionary<string, string> RequestHeaders { get; set; } // need it for logging, and callback type stuff
     }
-    }
 }

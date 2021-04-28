@@ -172,15 +172,26 @@ namespace nac.CurlHttpClient
             // free up some stuff
             if (headerListHandle != null)
             {
-                nac.CurlThin.CurlNative.Slist.FreeAll(headerListHandle);
+                headerListHandle.Dispose();
             }
             
             // give back result
             return result;
         }
-        
-        
-        
+
+
+        public model.CurlExecResult get(string url="", Dictionary<string, string> headers = null)
+        {
+            var curlHandle = this.curlSetup();
+
+            var result = this.execCurl(curlHandle, url, headers);
+            
+            // Trigger OnNewHttpResponse
+            
+            // end things out
+            curlHandle.Dispose();
+            return result;
+        }
         
         
         
