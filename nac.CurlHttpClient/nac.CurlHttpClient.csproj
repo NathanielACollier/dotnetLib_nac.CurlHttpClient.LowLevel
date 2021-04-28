@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageVersion>1.0.1</PackageVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>Provides a high level way to use libcurl to make GET, POST, etc...  Uses CurlThin to handle the low level libcurl calls</Description>
+    <RepositoryUrl>https://github.com/NathanielACollier/nac.CurlHttpClient</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
