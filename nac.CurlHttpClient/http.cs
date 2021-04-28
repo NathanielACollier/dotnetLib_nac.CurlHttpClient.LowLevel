@@ -210,7 +210,9 @@ namespace nac.CurlHttpClient
                 {
                     headers = new Dictionary<string, string>();
                 }
-                curl.SetOpt(curlHandle, CURLoption.POSTFIELDS, requestBody);
+                curl.SetOpt(curlHandle, CURLoption.POSTFIELDSIZE, requestBody.Length);
+                curl.SetOpt(curlHandle, CURLoption.COPYPOSTFIELDS, requestBody);
+                
                 headers.Add("Content-Length",requestBody.Length.ToString());
             }
 
