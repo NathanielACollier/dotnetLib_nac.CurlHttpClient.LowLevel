@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace nac.CurlHttpClient.model
 {
     public class HttpSetup
@@ -9,6 +12,13 @@ namespace nac.CurlHttpClient.model
         public string proxyHost { get; set; }
         public int proxyPort { get; set;  }
         public string baseAddress { get; set; }
+
+        /*
+         Use this to modify headers on every call.  Could have other uses later
+         */
+        public delegate void onNewHttpRequestDelegate(Dictionary<string, string> headers);
+        
+        public onNewHttpRequestDelegate onNewHttpRequest { get; set; }
 
         public HttpSetup()
         {

@@ -132,6 +132,28 @@ namespace nac.CurlHttpClient
             // we know the final URL here
             result.RequestUrl = url;
             
+            
+            /*
+             people may need to modify headers on every call
+               + like setting an oauth Authorization header
+             */
+            if (this.options.onNewHttpRequest != null)
+            {
+                /*
+                 make sure headers is not null
+                  + If they specified a onNewHttpRequest callback they probably want to modify headers, so it needs to be non null
+                  + Normally it's fine for headers to be null, so just set it if they wanted to get a onNewHttpRequest callback
+                 */
+                if (headers == null)
+                {
+                    headers = new Dictionary<string, string>();
+                }
+                
+                this.options.onNewHttpRequest.Invoke(headers: headers);
+            }
+            
+            // all the request headers should be set by this point
+            result.RequestHeaders = headers;
             var headerListHandle = this.curlSetHeader(curlHandle, headers);
             curl.SetOpt(curlHandle, CURLoption.URL, url);
             
