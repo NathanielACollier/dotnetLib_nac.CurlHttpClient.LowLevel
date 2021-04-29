@@ -29,6 +29,16 @@ namespace Tests
 
 
         [TestMethod]
+        public void get_testBaseAddress()
+        {
+            var http = new nac.CurlHttpClient.LowLevel.http(new HttpSetup() {baseAddress = "http://httpbin.org"});
+            var result = http.get("ip");
+            
+            Console.WriteLine(result);
+        }
+
+
+        [TestMethod]
         public void post()
         {
             var http = createHttp();
