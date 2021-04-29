@@ -1,6 +1,6 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using nac.CurlHttpClient.model;
+using nac.CurlHttpClient.LowLevel.model;
 
 namespace Tests
 {
@@ -8,9 +8,9 @@ namespace Tests
     public class LowLevel_Http_Tests
     {
 
-        private nac.CurlHttpClient.http createHttp()
+        private nac.CurlHttpClient.LowLevel.http createHttp()
         {
-            var http = new nac.CurlHttpClient.http(new HttpSetup()
+            var http = new nac.CurlHttpClient.LowLevel.http(new HttpSetup()
             {
                 onNewHttpResponse = (_response) =>
                 {

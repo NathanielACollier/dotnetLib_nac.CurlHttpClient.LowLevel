@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace nac.CurlHttpClient.model
+namespace nac.CurlHttpClient.LowLevel.model
 {
     public class HttpSetup
     {

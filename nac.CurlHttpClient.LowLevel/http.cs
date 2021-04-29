@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using nac.CurlHttpClient.model;
+using nac.CurlHttpClient.LowLevel.model;
 using nac.CurlThin.Enums;
 using nac.CurlThin.SafeHandles;
 using curl = nac.CurlThin.CurlNative.Easy;
 using CurlHandleType = nac.CurlThin.SafeHandles.SafeEasyHandle;
 
-namespace nac.CurlHttpClient
+namespace nac.CurlHttpClient.LowLevel
 {
     public class http
     {

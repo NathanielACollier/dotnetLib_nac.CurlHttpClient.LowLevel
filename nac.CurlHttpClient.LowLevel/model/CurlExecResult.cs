@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using nac.CurlThin.Enums;
 
-namespace nac.CurlHttpClient.model
+namespace nac.CurlHttpClient.LowLevel.model
 {
     public class CurlExecResult
     {

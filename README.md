@@ -1,6 +1,6 @@
-# Curl HttpClient
+# Curl HttpClient (LowLevel)
 
-+ This library will be an alternative to System.Net.Http.HttpClient.
++ This library will be an alternative to System.Net.Http.HttpClient.  This is the low level library that interacts with Curl via CurlThin.
 + Originaly started because of some things curl would do that newer dotnet would not.
 
 ## Examples

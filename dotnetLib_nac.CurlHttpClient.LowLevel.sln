@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.809.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nac.CurlHttpClient", "nac.CurlHttpClient\nac.CurlHttpClient.csproj", "{FE52002E-DFE3-46F1-89FC-DCD3DF066F83}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nac.CurlHttpClient.LowLevel", "nac.CurlHttpClient.LowLevel\nac.CurlHttpClient.LowLevel.csproj", "{FE52002E-DFE3-46F1-89FC-DCD3DF066F83}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{8A8C07AD-E73F-4DDA-A5C3-01B887B26E41}"
 EndProject

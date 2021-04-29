@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\nac.CurlHttpClient\nac.CurlHttpClient.csproj" />
+    <ProjectReference Include="..\nac.CurlHttpClient.LowLevel\nac.CurlHttpClient.LowLevel.csproj" />
   </ItemGroup>
 
 </Project>
