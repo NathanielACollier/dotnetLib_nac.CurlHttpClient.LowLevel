@@ -168,7 +168,14 @@ namespace nac.CurlHttpClient.LowLevel
                 return (UIntPtr) length;
             });
 
-            result.ResponseCode = curl.Perform(curlHandle);
+            result.CurlResultCode = curl.Perform(curlHandle);
+            
+            // get the http response code
+            // documentation on getInfo is available here: https://curl.se/libcurl/c/curl_easy_getinfo.html
+            if (curl.GetInfo(curlHandle, CURLINFO.RESPONSE_CODE, out int httpResponseCode) == CURLcode.OK)
+            {
+                result.ResponseCode = (System.Net.HttpStatusCode)httpResponseCode;
+            }
             
             // free up some stuff
             if (headerListHandle != null)

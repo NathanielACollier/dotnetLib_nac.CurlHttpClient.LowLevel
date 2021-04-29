@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using nac.CurlThin.Enums;
 
@@ -10,7 +11,9 @@ namespace nac.CurlHttpClient.LowLevel.model
     {
         public string RequestUrl { get; set; }
         public MemoryStream ResponseStream { get; set; }
-        public CURLcode ResponseCode { get; set; }
+        
+        public CURLcode CurlResultCode {get; set; }
+        public System.Net.HttpStatusCode ResponseCode { get; set; }
 
         public Dictionary<string, string> RequestHeaders { get; set; } // need it for logging, and callback type stuff
 
@@ -19,6 +22,11 @@ namespace nac.CurlHttpClient.LowLevel.model
         public string RequestMethod { get; set; }
         
         public model.HttpSetup setupOptions { get; set; }
+
+        public CurlExecResult()
+        {
+            this.ResponseCode = HttpStatusCode.Continue; // start it off this way, it is very unliekly we'd ever get that back from a web server
+        }
 
         public override string ToString()
         {
