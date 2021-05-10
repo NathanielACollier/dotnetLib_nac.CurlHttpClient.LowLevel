@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace nac.CurlHttpClient.LowLevel.model
 {
@@ -44,7 +45,7 @@ namespace nac.CurlHttpClient.LowLevel.model
         {
             var url = this.baseAddress?.Trim() ?? "";
             // if last character is not forward slash, then append forward slash
-            if (url.Substring(-1) != "/")
+            if (url.Last() != '/')
             {
                 url += "/";
             }

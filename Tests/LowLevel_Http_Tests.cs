@@ -8,22 +8,12 @@ namespace Tests
     public class LowLevel_Http_Tests
     {
 
-        private nac.CurlHttpClient.LowLevel.http createHttp()
-        {
-            var http = new nac.CurlHttpClient.LowLevel.http(new HttpSetup()
-            {
-                onNewHttpResponse = (_response) =>
-                {
-                    Console.WriteLine(_response);
-                }
-            });
-            return http;
-        }
-        
+
+
         [TestMethod]
         public void get()
         {
-            var http = createHttp();
+            var http = lib.httpFactory.createHttp();
             var result = http.get("http://httpbin.org/ip");
         }
 
@@ -31,7 +21,7 @@ namespace Tests
         [TestMethod]
         public void get_testBaseAddress()
         {
-            var http = new nac.CurlHttpClient.LowLevel.http(new HttpSetup() {baseAddress = "http://httpbin.org"});
+            var http = lib.httpFactory.createHttp_BaseUrlHttpBinOrg();
             var result = http.get("ip");
             
             Console.WriteLine(result);
@@ -41,7 +31,7 @@ namespace Tests
         [TestMethod]
         public void post()
         {
-            var http = createHttp();
+            var http = lib.httpFactory.createHttp();
             var result = http.post("http://httpbin.org/post",
                 requestBody: "fieldname1=fieldvalue1&fieldname2=fieldvalue2");
         }
