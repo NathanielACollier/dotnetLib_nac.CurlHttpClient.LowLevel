@@ -13,6 +13,7 @@ namespace nac.CurlHttpClient.LowLevel.model
         public string proxyHost { get; set; }
         public int proxyPort { get; set;  }
         public string baseAddress { get; set; }
+        public TimeSpan? Timeout { get; set; }
 
         /*
          Use this to modify headers on every call.  Could have other uses later

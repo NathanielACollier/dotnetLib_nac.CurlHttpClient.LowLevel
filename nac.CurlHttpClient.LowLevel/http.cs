@@ -168,6 +168,12 @@ namespace nac.CurlHttpClient.LowLevel
                 return (UIntPtr) length;
             });
 
+            if (options.Timeout.HasValue)
+            {
+                // timeout is in 'seconds'; see: https://curl.se/libcurl/c/CURLOPT_TIMEOUT.html
+                curl.SetOpt(curlHandle, CURLoption.TIMEOUT_MS, (int) options.Timeout.Value.TotalMilliseconds);
+            }
+
             result.CurlResultCode = curl.Perform(curlHandle);
             
             // get the http response code

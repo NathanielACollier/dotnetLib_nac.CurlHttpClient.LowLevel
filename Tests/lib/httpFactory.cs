@@ -5,16 +5,19 @@ namespace Tests.lib
 {
     public class httpFactory
     {
-
-        public static nac.CurlHttpClient.LowLevel.http createHttp()
+        public static nac.CurlHttpClient.LowLevel.http create(Action<nac.CurlHttpClient.LowLevel.model.HttpSetup> onSetup=null)
         {
-            var http = new nac.CurlHttpClient.LowLevel.http(new HttpSetup()
+            var options = new nac.CurlHttpClient.LowLevel.model.HttpSetup()
             {
-                onNewHttpResponse = (_response) =>
+                onNewHttpResponse = (_curlResult) =>
                 {
-                    Console.WriteLine(_response);
+                    System.Diagnostics.Debug.WriteLine(_curlResult.ToString());
                 }
-            });
+            };
+
+            onSetup?.Invoke(options);
+
+            var http = new nac.CurlHttpClient.LowLevel.http(options);
             return http;
         }
 
@@ -22,15 +25,10 @@ namespace Tests.lib
 
         public static nac.CurlHttpClient.LowLevel.http createHttp_BaseUrlHttpBinOrg()
         {
-            var http = new nac.CurlHttpClient.LowLevel.http(new HttpSetup()
+            return create(options =>
             {
-                baseAddress = "http://httpbin.org",
-                onNewHttpResponse = (_response) =>
-                {
-                    Console.WriteLine(_response);
-                }
+                options.baseAddress = "http://httpbin.org";
             });
-            return http;
         }
                 
     }
