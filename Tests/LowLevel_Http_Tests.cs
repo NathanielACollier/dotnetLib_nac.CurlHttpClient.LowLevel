@@ -1,6 +1,7 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using nac.CurlHttpClient.LowLevel.model;
+using nac.CurlThin.Enums;
 
 namespace Tests
 {
@@ -40,7 +41,15 @@ namespace Tests
         [TestMethod]
         public void testReallyShortTimeout()
         {
+            var http = lib.httpFactory.create(options =>
+            {
+                options.Timeout = new TimeSpan(0, 0, 0, 0, 20);
+                options.baseAddress = "http://httpbin.org/";
+            });
+
+            var result = http.get("ip");
             
+            Assert.IsTrue(result.CurlResultCode == CURLcode.OPERATION_TIMEDOUT);
         }
         
         
