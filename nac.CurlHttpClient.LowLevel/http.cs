@@ -182,13 +182,7 @@ namespace nac.CurlHttpClient.LowLevel
             {
                 result.ResponseCode = (System.Net.HttpStatusCode)httpResponseCode;
             }
-            
-            // free up some stuff
-            if (headerListHandle != null)
-            {
-                headerListHandle.Dispose();
-            }
-            
+
             // give back result
             return result;
         }
